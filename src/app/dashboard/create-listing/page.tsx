@@ -228,6 +228,7 @@ export default function CreateListing() {
                   Property Type *
                 </label>
                 <select
+                  title='rt'
                   name="type"
                   required
                   value={formData.type}
@@ -261,6 +262,7 @@ export default function CreateListing() {
                   Available Rooms *
                 </label>
                 <input
+                  title='er'
                   type="number"
                   name="availableRooms"
                   required
@@ -276,6 +278,7 @@ export default function CreateListing() {
                   Total Rooms *
                 </label>
                 <input
+                  title='er'
                   type="number"
                   name="totalRooms"
                   required
@@ -291,6 +294,7 @@ export default function CreateListing() {
                   Available From *
                 </label>
                 <input
+                  title='df'
                   type="date"
                   name="availableFrom"
                   required
@@ -342,6 +346,7 @@ export default function CreateListing() {
                   State *
                 </label>
                 <select
+                  title='w'
                   name="location.state"
                   required
                   value={formData.location.state}
@@ -451,6 +456,7 @@ export default function CreateListing() {
                       className="w-full h-32 object-cover rounded-lg"
                     />
                     <button
+                      title='sw'
                       type="button"
                       onClick={() => removeImage(index)}
                       className="absolute top-2 right-2 p-1 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"

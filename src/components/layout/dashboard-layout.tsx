@@ -64,6 +64,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <span className="text-xl font-bold text-foreground">FlatUp</span>
           </Link>
           <button
+            title='sidebar'
             onClick={() => setIsSidebarOpen(false)}
             className="lg:hidden p-2 rounded-md hover:bg-accent"
           >
@@ -133,6 +134,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="sticky top-0 z-40 bg-background border-b border-border">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
             <button
+              title='sidebar2'
               onClick={() => setIsSidebarOpen(true)}
               className="lg:hidden p-2 rounded-md hover:bg-accent"
             >
@@ -141,7 +143,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
             <div className="flex items-center space-x-4">
               {/* Notifications */}
-              <button className="p-2 rounded-md hover:bg-accent relative">
+              <button title='x' className="p-2 rounded-md hover:bg-accent relative">
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full"></span>
               </button>

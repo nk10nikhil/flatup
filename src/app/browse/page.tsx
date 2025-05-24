@@ -158,6 +158,7 @@ export default function Browse() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">City</label>
                     <select
+                    title='hj'
                       value={filters.city}
                       onChange={(e) => handleFilterChange('city', e.target.value)}
                       className="input"
@@ -171,6 +172,7 @@ export default function Browse() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Property Type</label>
                     <select
+                      title='jk'
                       value={filters.type}
                       onChange={(e) => handleFilterChange('type', e.target.value)}
                       className="input"
@@ -204,6 +206,7 @@ export default function Browse() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Lister Type</label>
                     <select
+                      title='jki'
                       value={filters.listerType}
                       onChange={(e) => handleFilterChange('listerType', e.target.value)}
                       className="input"
@@ -217,6 +220,7 @@ export default function Browse() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Sort By</label>
                     <select
+                      title='yu'
                       value={`${filters.sort}-${filters.order}`}
                       onChange={(e) => {
                         const [sort, order] = e.target.value.split('-');
@@ -288,10 +292,10 @@ export default function Browse() {
                         </span>
                       </div>
                       <div className="absolute top-4 right-4 flex space-x-2">
-                        <button className="p-2 bg-background/90 rounded-full hover:bg-background">
+                        <button title='df' className="p-2 bg-background/90 rounded-full hover:bg-background">
                           <Heart className="h-4 w-4" />
                         </button>
-                        <button className="p-2 bg-background/90 rounded-full hover:bg-background">
+                        <button title='io' className="p-2 bg-background/90 rounded-full hover:bg-background">
                           <Share2 className="h-4 w-4" />
                         </button>
                       </div>

@@ -171,12 +171,14 @@ export default function FlatDetail() {
               {flat.images.length > 1 && (
                 <>
                   <button
+                    title='pl'
                     onClick={prevImage}
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/70"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
                   <button
+                    title='xd'
                     onClick={nextImage}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/70"
                   >
@@ -204,10 +206,10 @@ export default function FlatDetail() {
           
           {/* Action buttons */}
           <div className="absolute top-4 right-4 flex space-x-2">
-            <button className="p-2 bg-black/50 text-white rounded-full hover:bg-black/70">
+            <button title='pl' className="p-2 bg-black/50 text-white rounded-full hover:bg-black/70">
               <Heart className="h-5 w-5" />
             </button>
-            <button className="p-2 bg-black/50 text-white rounded-full hover:bg-black/70">
+            <button title='xd' className="p-2 bg-black/50 text-white rounded-full hover:bg-black/70">
               <Share2 className="h-5 w-5" />
             </button>
           </div>
@@ -396,6 +398,7 @@ export default function FlatDetail() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-foreground">Send Inquiry</h3>
                 <button
+                  title='yu'
                   onClick={() => setShowInquiryForm(false)}
                   className="p-2 hover:bg-accent rounded-md"
                 >
