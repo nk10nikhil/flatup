@@ -6,10 +6,10 @@ import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, password, role } = await request.json();
+    const { name, email, password, phone, role } = await request.json();
 
     // Validate input
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password || !phone || !role) {
       return NextResponse.json(
         { error: 'All fields are required' },
         { status: 400 }
@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
       name,
       email,
       password: hashedPassword,
+      phone,
       role,
     });
 

@@ -35,6 +35,7 @@ export default function FlatDetail() {
     message: '',
   });
   const [isSubmittingInquiry, setIsSubmittingInquiry] = useState(false);
+  const [hasSubmittedInquiry, setHasSubmittedInquiry] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -80,8 +81,9 @@ export default function FlatDetail() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Inquiry sent successfully!');
+        toast.success('Inquiry sent successfully! You can now see the contact details.');
         setShowInquiryForm(false);
+        setHasSubmittedInquiry(true);
         setInquiryForm({
           visitorName: '',
           visitorEmail: '',
@@ -189,9 +191,8 @@ export default function FlatDetail() {
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full ${
-                          index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                        }`}
+                        className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                          }`}
                       />
                     ))}
                   </div>
@@ -203,7 +204,7 @@ export default function FlatDetail() {
               <Home className="h-16 w-16 text-muted-foreground" />
             </div>
           )}
-          
+
           {/* Action buttons */}
           <div className="absolute top-4 right-4 flex space-x-2">
             <button title='pl' className="p-2 bg-black/50 text-white rounded-full hover:bg-black/70">
@@ -228,7 +229,7 @@ export default function FlatDetail() {
                     <span>{flat.views || 0} views</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center text-muted-foreground mb-4">
                   <MapPin className="h-5 w-5 mr-2" />
                   <span>{flat.location?.address}, {flat.location?.city}, {flat.location?.state} - {flat.location?.pincode}</span>
@@ -273,7 +274,7 @@ export default function FlatDetail() {
                     </div>
                   ))}
                 </div>
-                
+
                 {flat.amenities && flat.amenities.length > 0 && (
                   <div className="mt-4">
                     <h3 className="font-medium text-foreground mb-2">Additional Amenities</h3>
@@ -308,7 +309,7 @@ export default function FlatDetail() {
               <div className="text-3xl font-bold text-primary mb-4">
                 {formatPrice(flat.price)}/month
               </div>
-              
+
               <div className="space-y-4 mb-6">
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Listed by</h3>
@@ -333,23 +334,48 @@ export default function FlatDetail() {
               </div>
 
               <div className="space-y-3">
-                <button
-                  onClick={() => setShowInquiryForm(true)}
-                  className="btn-primary w-full"
-                >
-                  Show Interest
-                </button>
-                
-                {flat.lister?.phone && (
-                  <a
-                    href={`tel:${flat.lister.phone}`}
-                    className="btn-outline w-full flex items-center justify-center space-x-2"
+                {!hasSubmittedInquiry ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowInquiryForm(true)}
+                    className="btn-primary w-full"
                   >
-                    <Phone className="h-4 w-4" />
-                    <span>Call Now</span>
-                  </a>
+                    Show Interest
+                  </button>
+                ) : (
+                  <div className="p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <p className="text-sm text-green-800 dark:text-green-200 text-center">
+                      ✅ Inquiry sent! Contact details revealed below.
+                    </p>
+                  </div>
                 )}
-                
+
+                {hasSubmittedInquiry && flat.lister?.phone && (
+                  <div className="space-y-2">
+                    <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-foreground">Phone Number:</span>
+                        <span className="font-semibold text-primary">{flat.lister.phone}</span>
+                      </div>
+                    </div>
+                    <a
+                      href={`tel:${flat.lister.phone}`}
+                      className="btn-outline w-full flex items-center justify-center space-x-2"
+                    >
+                      <Phone className="h-4 w-4" />
+                      <span>Call Now</span>
+                    </a>
+                  </div>
+                )}
+
+                {!hasSubmittedInquiry && (
+                  <div className="p-3 bg-muted/50 border border-border rounded-lg">
+                    <p className="text-sm text-muted-foreground text-center">
+                      📞 Submit an inquiry to reveal contact details
+                    </p>
+                  </div>
+                )}
+
                 {flat.lister?.email && (
                   <a
                     href={`mailto:${flat.lister.email}`}
@@ -405,7 +431,7 @@ export default function FlatDetail() {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              
+
               <form onSubmit={handleInquirySubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
@@ -420,7 +446,7 @@ export default function FlatDetail() {
                     placeholder="Enter your name"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Email
@@ -434,7 +460,7 @@ export default function FlatDetail() {
                     placeholder="Enter your email"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Phone Number
@@ -448,7 +474,7 @@ export default function FlatDetail() {
                     placeholder="Enter your phone number"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Message
@@ -462,7 +488,7 @@ export default function FlatDetail() {
                     placeholder="Tell the owner about your requirements..."
                   />
                 </div>
-                
+
                 <div className="flex space-x-3">
                   <button
                     type="button"

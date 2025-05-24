@@ -43,7 +43,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex">
       {/* Mobile sidebar backdrop */}
       {isSidebarOpen && (
         <div
@@ -54,9 +54,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-border">
           <Link href="/" className="flex items-center space-x-2">
@@ -64,6 +63,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <span className="text-xl font-bold text-foreground">FlatUp</span>
           </Link>
           <button
+            type="button"
             title='sidebar'
             onClick={() => setIsSidebarOpen(false)}
             className="lg:hidden p-2 rounded-md hover:bg-accent"
@@ -80,11 +80,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                  }`}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${isActive
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    }`}
                   onClick={() => setIsSidebarOpen(false)}
                 >
                   <item.icon className="mr-3 h-5 w-5" />
@@ -118,6 +117,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
             </div>
             <button
+              type="button"
               onClick={handleSignOut}
               className="flex items-center w-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
             >
@@ -129,11 +129,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
         <div className="sticky top-0 z-40 bg-background border-b border-border">
           <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
             <button
+              type="button"
               title='sidebar2'
               onClick={() => setIsSidebarOpen(true)}
               className="lg:hidden p-2 rounded-md hover:bg-accent"
@@ -143,7 +144,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
             <div className="flex items-center space-x-4">
               {/* Notifications */}
-              <button title='x' className="p-2 rounded-md hover:bg-accent relative">
+              <button type="button" title='notifications' className="p-2 rounded-md hover:bg-accent relative">
                 <Bell className="h-5 w-5" />
                 <span className="absolute top-1 right-1 h-2 w-2 bg-destructive rounded-full"></span>
               </button>
@@ -167,7 +168,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Page content */}
-        <main className="flex-1">
+        <main className="flex-1 overflow-auto">
           <div className="py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {children}

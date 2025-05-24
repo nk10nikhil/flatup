@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, Mail, Lock, User, Building2, UserCheck } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Building2, UserCheck, Phone } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function SignUp() {
@@ -13,6 +13,7 @@ export default function SignUp() {
     email: '',
     password: '',
     confirmPassword: '',
+    phone: '',
     role: 'owner' as 'broker' | 'owner' | 'room_sharer',
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +55,7 @@ export default function SignUp() {
           name: formData.name,
           email: formData.email,
           password: formData.password,
+          phone: formData.phone,
           role: formData.role,
         }),
       });
@@ -62,7 +64,7 @@ export default function SignUp() {
 
       if (response.ok) {
         toast.success('Account created successfully!');
-        
+
         // Auto sign in after registration
         const result = await signIn('credentials', {
           email: formData.email,
@@ -174,6 +176,26 @@ export default function SignUp() {
             </div>
 
             <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+                Phone Number
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="input pl-10"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            </div>
+
+            <div>
               <label htmlFor="role" className="block text-sm font-medium text-foreground mb-2">
                 I am a
               </label>
@@ -181,11 +203,10 @@ export default function SignUp() {
                 {roleOptions.map((option) => (
                   <label
                     key={option.value}
-                    className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
-                      formData.role === option.value
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:bg-accent'
-                    }`}
+                    className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${formData.role === option.value
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:bg-accent'
+                      }`}
                   >
                     <input
                       type="radio"
