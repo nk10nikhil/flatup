@@ -33,7 +33,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const { pathname } = req.nextUrl;
-        
+
         // Allow public routes
         if (
           pathname.startsWith('/auth') ||
@@ -42,7 +42,10 @@ export default withAuth(
           pathname.startsWith('/browse') ||
           pathname.startsWith('/flat') ||
           pathname.startsWith('/_next') ||
-          pathname.startsWith('/api/public')
+          pathname.startsWith('/api/public') ||
+          pathname.startsWith('/api/flats') ||
+          pathname.startsWith('/api/inquiries') ||
+          pathname.startsWith('/pricing')
         ) {
           return true;
         }
