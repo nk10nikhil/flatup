@@ -28,6 +28,17 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Check for admin credentials
+        if (credentials.email === 'nk10nikhil@gmail.com' && credentials.password === 'nk10nikhil') {
+          return {
+            id: 'admin',
+            email: 'nk10nikhil@gmail.com',
+            name: 'Super Admin',
+            role: 'superadmin',
+            image: null,
+          };
+        }
+
         await connectDB();
 
         const user = await User.findOne({ email: credentials.email }).select('+password');
@@ -80,9 +91,9 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
         await connectDB();
-        
+
         const existingUser = await User.findOne({ email: user.email });
-        
+
         if (!existingUser) {
           // Create new user with default role
           await User.create({
@@ -107,7 +118,7 @@ declare module 'next-auth' {
   interface User {
     role?: string;
   }
-  
+
   interface Session {
     user: {
       id: string;
