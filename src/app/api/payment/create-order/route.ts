@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
     const order = await razorpay.orders.create({
       amount: planDetails.amount,
       currency: planDetails.currency,
-      receipt: `subscription_${user._id}_${Date.now()}`,
+      // Limit receipt to 40 characters
+      receipt: `sub_${user._id.toString().substring(0, 10)}_${Date.now()}`.substring(0, 40),
       notes: {
         userId: user._id.toString(),
         plan,
