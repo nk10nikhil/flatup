@@ -12,7 +12,7 @@ export async function GET(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id || session.user.role !== 'superadmin') {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -23,7 +23,7 @@ export async function GET(
     await connectDB();
 
     const user = await User.findById(params.id).select('-password').lean();
-    
+
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -33,7 +33,7 @@ export async function GET(
 
     // Get user's listings
     const listings = await Flat.find({ lister: params.id }).lean();
-    
+
     // Get user's inquiries (for their listings)
     const inquiries = await InterestInquiry.find({
       flat: { $in: listings.map(l => l._id) }
@@ -71,7 +71,7 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id || session.user.role !== 'superadmin') {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -82,7 +82,7 @@ export async function PUT(
     await connectDB();
 
     const updateData = await request.json();
-    
+
     // Remove sensitive fields that shouldn't be updated directly
     delete updateData.password;
     delete updateData._id;
@@ -121,7 +121,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id || session.user.role !== 'superadmin') {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -132,7 +132,7 @@ export async function DELETE(
     await connectDB();
 
     const user = await User.findById(params.id);
-    
+
     if (!user) {
       return NextResponse.json(
         { error: 'User not found' },
@@ -142,7 +142,7 @@ export async function DELETE(
 
     // Delete user's listings
     await Flat.deleteMany({ lister: params.id });
-    
+
     // Delete inquiries for user's listings
     const userListings = await Flat.find({ lister: params.id }).select('_id');
     await InterestInquiry.deleteMany({

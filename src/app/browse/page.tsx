@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -18,7 +18,8 @@ import {
 import { MainLayout } from '@/components/layout/main-layout';
 import { formatPrice, FLAT_TYPES, INDIAN_STATES } from '@/lib/utils';
 
-export default function Browse() {
+// Component to handle search params with Suspense
+function BrowseContent() {
   const searchParams = useSearchParams();
   const [flats, setFlats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -158,7 +159,7 @@ export default function Browse() {
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">City</label>
                     <select
-                    title='hj'
+                      title='hj'
                       value={filters.city}
                       onChange={(e) => handleFilterChange('city', e.target.value)}
                       className="input"
@@ -268,17 +269,15 @@ export default function Browse() {
                 ))}
               </div>
             ) : flats.length > 0 ? (
-              <div className={viewMode === 'grid' 
+              <div className={viewMode === 'grid'
                 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
                 : 'space-y-6'
               }>
                 {flats.map((flat: any) => (
-                  <div key={flat._id} className={`card p-0 overflow-hidden hover:shadow-lg transition-shadow ${
-                    viewMode === 'list' ? 'flex' : ''
-                  }`}>
-                    <div className={`bg-muted relative ${
-                      viewMode === 'list' ? 'w-64 flex-shrink-0' : 'aspect-video'
+                  <div key={flat._id} className={`card p-0 overflow-hidden hover:shadow-lg transition-shadow ${viewMode === 'list' ? 'flex' : ''
                     }`}>
+                    <div className={`bg-muted relative ${viewMode === 'list' ? 'w-64 flex-shrink-0' : 'aspect-video'
+                      }`}>
                       {flat.images?.[0] && (
                         <img
                           src={flat.images[0]}
@@ -325,7 +324,7 @@ export default function Browse() {
                           by {flat.listerType}
                         </div>
                       </div>
-                      <Link 
+                      <Link
                         href={`/flat/${flat._id}`}
                         className="btn-outline w-full mt-4"
                       >
@@ -358,24 +357,23 @@ export default function Browse() {
                 >
                   Previous
                 </button>
-                
+
                 {[...Array(Math.min(5, pagination.pages))].map((_, i) => {
                   const page = i + 1;
                   return (
                     <button
                       key={page}
                       onClick={() => handlePageChange(page)}
-                      className={`px-3 py-2 rounded-md ${
-                        pagination.page === page
+                      className={`px-3 py-2 rounded-md ${pagination.page === page
                           ? 'bg-primary text-primary-foreground'
                           : 'hover:bg-accent'
-                      }`}
+                        }`}
                     >
                       {page}
                     </button>
                   );
                 })}
-                
+
                 <button
                   onClick={() => handlePageChange(pagination.page + 1)}
                   disabled={pagination.page === pagination.pages}
@@ -389,5 +387,27 @@ export default function Browse() {
         </div>
       </div>
     </MainLayout>
+  );
+}
+
+// Loading fallback component
+function BrowseFallback() {
+  return (
+    <MainLayout>
+      <div className="py-8 container">
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    </MainLayout>
+  );
+}
+
+// Main component with Suspense boundary
+export default function Browse() {
+  return (
+    <Suspense fallback={<BrowseFallback />}>
+      <BrowseContent />
+    </Suspense>
   );
 }

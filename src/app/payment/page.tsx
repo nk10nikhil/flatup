@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, CreditCard, Shield, Clock } from 'lucide-react';
@@ -12,7 +12,8 @@ declare global {
   }
 }
 
-export default function Payment() {
+// Component to handle search params with Suspense
+function PaymentContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,7 +59,7 @@ export default function Payment() {
 
   useEffect(() => {
     if (status === 'loading') return;
-    
+
     if (!session) {
       router.push('/auth/signin');
       return;
@@ -193,16 +194,15 @@ export default function Payment() {
           {/* Plan Selection */}
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Select Your Plan</h2>
-            
+
             <div className="space-y-4">
               {Object.entries(plans).map(([key, plan]) => (
                 <div
                   key={key}
-                  className={`card p-6 cursor-pointer transition-all ${
-                    selectedPlan === key
+                  className={`card p-6 cursor-pointer transition-all ${selectedPlan === key
                       ? 'border-primary bg-primary/5'
                       : 'hover:border-primary/50'
-                  }`}
+                    }`}
                   onClick={() => setSelectedPlan(key)}
                 >
                   <div className="flex items-center justify-between mb-4">
@@ -210,17 +210,16 @@ export default function Payment() {
                       <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
                       <p className="text-2xl font-bold text-primary">₹{plan.price}/month</p>
                     </div>
-                    <div className={`w-6 h-6 rounded-full border-2 ${
-                      selectedPlan === key
+                    <div className={`w-6 h-6 rounded-full border-2 ${selectedPlan === key
                         ? 'border-primary bg-primary'
                         : 'border-border'
-                    }`}>
+                      }`}>
                       {selectedPlan === key && (
                         <Check className="w-4 h-4 text-primary-foreground m-0.5" />
                       )}
                     </div>
                   </div>
-                  
+
                   <ul className="space-y-2">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-center text-sm text-muted-foreground">
@@ -238,7 +237,7 @@ export default function Payment() {
           <div className="space-y-6">
             <div className="card p-6">
               <h2 className="text-2xl font-semibold text-foreground mb-6">Payment Summary</h2>
-              
+
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
                   <span className="text-foreground">Plan</span>
@@ -306,5 +305,23 @@ export default function Payment() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function PaymentFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+    </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function Payment() {
+  return (
+    <Suspense fallback={<PaymentFallback />}>
+      <PaymentContent />
+    </Suspense>
   );
 }
