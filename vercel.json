@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "next.config.ts",
+            "use": "@vercel/next"
+        }
+    ],
+    "functions": {
+        "src/app/api/**/*.ts": {
+            "maxDuration": 30
+        }
+    },
+    "regions": [
+        "bom1"
+    ]
+}
