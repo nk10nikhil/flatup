@@ -73,10 +73,9 @@ const SubscriptionSchema = new Schema<ISubscription>({
   timestamps: true,
 });
 
-// Indexes
+// Indexes (paymentId already has unique index from schema definition)
 SubscriptionSchema.index({ user: 1 });
 SubscriptionSchema.index({ status: 1 });
 SubscriptionSchema.index({ endDate: 1 });
-SubscriptionSchema.index({ paymentId: 1 });
 
 export default mongoose.models.Subscription || mongoose.model<ISubscription>('Subscription', SubscriptionSchema);

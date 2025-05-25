@@ -83,8 +83,7 @@ const UserSchema = new Schema<IUser>({
   timestamps: true,
 });
 
-// Index for faster queries
-UserSchema.index({ email: 1 });
+// Index for faster queries (email already has unique index from schema definition)
 UserSchema.index({ role: 1 });
 UserSchema.index({ 'subscription.status': 1 });
 

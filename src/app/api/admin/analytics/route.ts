@@ -1,16 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import User from '@/models/User';
 import Flat from '@/models/Flat';
 import InterestInquiry from '@/models/InterestInquiry';
-import Subscription from '@/models/Subscription';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.id || session.user.role !== 'superadmin') {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -150,10 +149,6 @@ export async function GET(request: NextRequest) {
     });
 
     // Get expiring subscriptions (mock - in 7 days)
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    
-    // This would be calculated from actual subscription data
     const expiringSubscriptions = Math.floor(totalUsers * 0.05); // Mock 5% expiring
 
     return NextResponse.json({
